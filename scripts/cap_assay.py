@@ -51,6 +51,9 @@ def make_figures(z, t, u_states, save_path):
 
 
 def main():
+    """ solves spatio-temporal dynamics of ethanol concentration
+    in capillary assay using finite-element method """
+
     # Only verbose errors
     set_log_level(40,)
 
