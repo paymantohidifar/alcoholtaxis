@@ -11,17 +11,20 @@ def integrator(u, dx):
 
 def make_figures(z, t, u_states, save_path):
 
-    # concentration profiles along center line at time = 0, 10, and 30 min
-    plt.figure(1)
-    plt.plot(z, u_states[0].get('u_z'), 'k-')
-    plt.plot(z, u_states[599].get('u_z'), 'b-')
-    plt.plot(z, u_states[1799].get('u_z'), 'r-')
-    plt.title('Ethanol concentration profile along capillary at different time points')
-    plt.xlabel('Position (mm)')
-    plt.ylabel('Ethanol concentration (mM)')
-    plt.legend(['t = 0', 't = 10 min', 't = 30 min'])
-    plt.savefig(save_path + 'fig_1.eps', dpi=None, facecolor='w', edgecolor='w', orientation='portrait', papertype=None,
-                format='eps', transparent=False, bbox_inches=None, pad_inches=0.1, metadata=None)
+    try:
+        # concentration profiles along center line at time = 0, 10, and 30 min
+        plt.figure(1)
+        plt.plot(z, u_states[0].get('u_z'), 'k-')
+        plt.plot(z, u_states[599].get('u_z'), 'b-')
+        plt.plot(z, u_states[1799].get('u_z'), 'r-')
+        plt.title('Ethanol concentration profile along capillary at different time points')
+        plt.xlabel('Position (mm)')
+        plt.ylabel('Ethanol concentration (mM)')
+        plt.legend(['t = 0', 't = 10 min', 't = 30 min'])
+        plt.savefig(save_path + 'fig_1.eps', dpi=None, facecolor='w', edgecolor='w', orientation='portrait', papertype=None,
+                    format='eps', transparent=False, bbox_inches=None, pad_inches=0.1, metadata=None)
+    except IndexError:
+        print('Cannot generate figure 1!')
 
     # Concentration profiles over 30 min at z = 0.1, 0.25, and 0.5 mm along center line on z axis
     plt.figure(2)
@@ -48,6 +51,23 @@ def make_figures(z, t, u_states, save_path):
     plt.savefig(save_path + 'fig_3.eps', dpi=None, facecolor='w', edgecolor='w', orientation='portrait', papertype=None,
                 format='eps', transparent=False, bbox_inches=None, pad_inches=0.1, metadata=None)
     plt.show()
+
+
+def write_data(z, t, u_states, write_path):
+    try:
+        with open(write_path + 'fig1.txt', 'w') as file:
+            file.write('\t'.join(['Position', 't=0', 't=10', 't=30']) + '\n')
+            file.writelines('\t'.join([str(z[n]), str(u_states[0].get('u_z')[n]), str(u_states[599].get('u_z')[n]),
+                                       str(u_states[1799].get('u_z')[n])]) + '\n' for n in range(0, len(z)))
+    except IndexError:
+        print('Cannot write data for figure 1!')
+
+    with open(write_path + 'fig2.txt', 'w') as file:
+        file.write('\t'.join(['Time', 'z=0.1', 'z=0.25', 'z=0.5']) + '\n')
+        file.writelines('\t'.join([str(t[n]), str(state['u_z'][state['z_pos'].index(0.1)]),
+                                   str(state['u_z'][state['z_pos'].index(0.25)]),
+                                   str(state['u_z'][state['z_pos'].index(0.5)])]) + '\n'
+                        for n, state in enumerate(u_states))
 
 
 def main():
@@ -124,6 +144,10 @@ def main():
         t += dt
         solve(a == L, u)
         u0.assign(u)
+
+    # Output solutions in text files
+    resultsdir = '../results/'
+    write_data(z_axis, time_series, u_states, resultsdir)
 
     # generate figures
     figuredir = '../results/figures/'
