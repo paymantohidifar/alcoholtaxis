@@ -5,7 +5,8 @@ University of Illinois at Urbana-Champaugn
 
 <b>Motivation:</b>  
 Motivation was to quantify true concentration of ethanol that cells experience in the pond near the mouth of capillary.  
-See fem_cap3d.pdf for formulation of fem problem.
+
+Diffusion of ethanol from a capillary into a pond is modeled using Fick's second law with Neumann boundary condition. Finite element method is used for solving the PDE. See fem_cap3d.pdf for detailed formulation of the fem problem.
 
 
 Required tools and python libraries:  
@@ -25,5 +26,5 @@ Gmsh was used to create cap3d.msh file:
 fenics built-in meshio-convert was used to generate cap3d.xml file from cap3d.msh file:  
 `meshio-convert cap3d.msh cap3d.xml`  
 Run `conda activate fenicsproject` to be able use fenics libraries.  
-Run `python cap_assay.py` to solve finite-element problem.
+Run `python cap_assay.py` to solve finite element problem.
 
