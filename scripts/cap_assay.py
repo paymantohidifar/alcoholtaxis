@@ -107,7 +107,7 @@ def main():
     # print('Ethanol diffusion coefficient: {} mm2/s'.format(D.values()[0]))
 
     # Define time variables
-    ftime = 1800          # 30-min long
+    ftime = 1800         # 30-min long
     num_steps = 1800
     dt = ftime / num_steps  # dt = 1 s
 
