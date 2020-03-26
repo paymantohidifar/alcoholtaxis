@@ -9,7 +9,7 @@ Motivation was to quantify true concentration of ethanol that cells experience i
 Diffusion of ethanol from a capillary into a pond is modeled using Fick's second law with Neumann boundary condition. Finite element method is used for solving the PDE. See fem_cap3d.pdf for detailed formulation of the fem problem.
 
 
-Required tools and python libraries:  
+Required tools and Python libraries:  
 ---
 >Gmsh (v-4.4.2)  
 fenics (v-2019.1.0) (prebuilt Anaconda Python packages were installed in fenicsproject environment)  
