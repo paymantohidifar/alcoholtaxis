@@ -1,8 +1,8 @@
 /* -------------------------------------------------------------------
-   File "domain.geo"
+   File "cap3d.geo"
 
    This file is the geometrical description used by GMSH to produce
-   the file "domain.msh".
+   the file "cap3d.msh".
    ------------------------------------------------------------------- */
 
 /* Definition of some parameters for geometrical dimensions 
