@@ -9,4 +9,4 @@
 *.Rhistory
 
 # unnecessary directories
-math/
+meta/
