@@ -4,3 +4,8 @@
 # Pycharm
 .idea
 
+# Markdown
+$.Rmd
+
+# unnecessary directories
+math/
