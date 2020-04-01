@@ -5,7 +5,8 @@
 .idea
 
 # Markdown
-$.Rmd
+*.Rmd
+*.Rhistory
 
 # unnecessary directories
 math/
