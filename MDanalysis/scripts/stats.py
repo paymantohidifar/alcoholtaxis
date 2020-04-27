@@ -153,10 +153,11 @@ class Parser:
         return self.line.split(' ')[0]
 
     def extract_coord(self):
-        return tuple(int(elt) for elt in self.line.split(' ')[1:])
+        # print(len(self.line.split(' ')[501:]))
+        return tuple(int(elt) for elt in self.line.split(' ')[501:3000])        # cut of first 500 of equilibration time
 
     def extract_dwell_time(self):
-        blocks = self.line.partition(' ')[2].replace(' ', '').split('0')
+        blocks = self.line.partition(' ')[2][501:3000].replace(' ', '').split('0')  # cut of first 500 of equilibration time
         return tuple(len(block) for block in blocks if block != '')
 
 
@@ -180,7 +181,7 @@ def write_coord_stats(res_objs_dict):
                               'diff [proportion]', 'diff [normal]', 'diff [p-value]']) + '\n')
         for resid, res_obj in res_objs_dict.items():
             res_df = res_obj.get_coord_stats(key='by_type')
-            file.write('\t'.join([resid, str(res_df.at['count', 'wt_group']), str(res_df.at['proportion', 'wt_group']),
+            file.write(','.join([resid, str(res_df.at['count', 'wt_group']), str(res_df.at['proportion', 'wt_group']),
                                  str(res_df.at['normality', 'wt_group']), str(res_df.at['count', 'mut_group']),
                                  str(res_df.at['proportion', 'mut_group']), str(res_df.at['normality', 'mut_group']),
                                  str(res_df.at['proportion', 'difference']), str(res_df.at['normality', 'difference']),
@@ -189,25 +190,16 @@ def write_coord_stats(res_objs_dict):
 
 def main():
     # create ResStatInfo objects for all amino acid residues
-    residues = create_res_objects_dict(rawdatadir, 'temp.txt')
+    residues = create_res_objects_dict(rawdatadir, 'filenames.txt')
 
     # write statistical analysis results based of receptor type to <coord_stats.csv> file
-    # write_coord_stats(residues)
-
-    # df = residues['431'].get_coord_stats(key='by_type')
-    # print(df)
-
-
-    # check if we can use normal distribution
-    # not_normal = [key for key, res in residues.items() if not res.get_coord_stats(key='by_type')]
-    # print([res.get_coord_stats() for res in residues.values()]))
-    # print(not_normal)
+    write_coord_stats(residues)
 
     # dwell time analysis
-    transformed = [mm.log2(elt) for elt in residues['431'].get_dwell_time_stats()]
+    # transformed = [mm.log2(elt) for elt in residues['431'].get_dwell_time_stats()]
     # plt.hist(residues['431'].get_dwell_time_stats())
-    plt.hist(transformed)
-    plt.show()
+    # plt.hist(transformed)
+    # plt.show()
 
 
 if __name__ == '__main__':
