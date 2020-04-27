@@ -1,0 +1,12 @@
+wtcyto_ETOH_1_AP1_frms.txt
+wtcyto_ETOH_1_BP1_frms.txt
+wtcyto_ETOH_2_AP1_frms.txt
+wtcyto_ETOH_2_BP1_frms.txt
+wtcyto_ETOH_3_AP1_frms.txt
+wtcyto_ETOH_3_BP1_frms.txt
+A431Scyto_ETOH_1_AP1_frms.txt
+A431Scyto_ETOH_1_BP1_frms.txt
+A431Scyto_ETOH_2_AP1_frms.txt
+A431Scyto_ETOH_2_BP1_frms.txt
+A431Scyto_ETOH_3_AP1_frms.txt
+A431Scyto_ETOH_3_BP1_frms.txt
