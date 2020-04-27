@@ -9,4 +9,4 @@
 *.Rhistory
 
 # unnecessary directories
-meta/
+diffusion/meta/
