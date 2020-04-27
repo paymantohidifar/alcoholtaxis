@@ -174,8 +174,8 @@ def create_res_objects_dict(directory, filenames):
 
 
 def write_coord_stats(res_objs_dict):
-    with open(resultdir + 'coord_stats.txt', 'w') as file:
-        file.write('\t'.join(['residue','wt_group [count]', 'wt_group [proportion]', 'wt_group [normal]',
+    with open(resultdir + 'coord_stats.csv', 'w') as file:
+        file.write(','.join(['residue', 'wt_group [count]', 'wt_group [proportion]', 'wt_group [normal]',
                               'mut_group [count]', 'mut_group [proportion]', 'mu_group [normal]',
                               'diff [proportion]', 'diff [normal]', 'diff [p-value]']) + '\n')
         for resid, res_obj in res_objs_dict.items():
@@ -188,11 +188,15 @@ def write_coord_stats(res_objs_dict):
 
 
 def main():
-    residues = create_res_objects_dict(rawdatadir, 'filenames.txt')
-    # print(residues['431'].get_coord_dset())
-    df = residues['431'].get_coord_stats(key='by_type')
-    print(df)
-    write_coord_stats(residues)
+    # create ResStatInfo objects for all amino acid residues
+    residues = create_res_objects_dict(rawdatadir, 'temp.txt')
+
+    # write statistical analysis results based of receptor type to <coord_stats.csv> file
+    # write_coord_stats(residues)
+
+    # df = residues['431'].get_coord_stats(key='by_type')
+    # print(df)
+
 
     # check if we can use normal distribution
     # not_normal = [key for key, res in residues.items() if not res.get_coord_stats(key='by_type')]
@@ -200,8 +204,10 @@ def main():
     # print(not_normal)
 
     # dwell time analysis
+    transformed = [mm.log2(elt) for elt in residues['431'].get_dwell_time_stats()]
     # plt.hist(residues['431'].get_dwell_time_stats())
-    # plt.show()
+    plt.hist(transformed)
+    plt.show()
 
 
 if __name__ == '__main__':
