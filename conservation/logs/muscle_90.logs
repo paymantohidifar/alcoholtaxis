@@ -1,0 +1,3 @@
+Started Sat Jul 11 20:52:26 2020
+muscle3.8.31_i86linux64 -in ../results/domain_seqs_90.fa -out ../results/domain_seqs_90.afa -log ../logs/muscle_90.logs 
+Finished Sat Jul 11 20:52:27 2020

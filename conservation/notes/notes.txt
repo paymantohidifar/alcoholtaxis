@@ -1,0 +1,116 @@
+database of taxids was downloaded from ncbi server:
+$ wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+
+Content of taxdump.tar.gz was extracted to ~/.taxonkit.
+
+Next nr_v5 protein sequence database was downloaded from ncbi server (7/8/20):
+$ update_blastdb.pl nr --decompress
+
+Note that nr_v5 is now defaulted to nr and can be downloaded using update_blastdb.pl from the latest package 2.10.1+ 
+
+There are two ways to retrieve all taxids under "Bacillus subtilis" species rank (taxid:1423). One using blast utility from NCBI and the other one using taxonkit tool:
+
+$ get_species_taxids.sh -t 1423 > 1423.taxids
+$ taxonkit list --ids 1423 > 1423.taxids
+$ taxonkit list --show-rank --show-name --indent "    " --ids 1423 > 1423_strains.taxids
+
+The last command retrieves all information for matched taxids.
+
+McpB full amino acid sequence was obtained from "busbcyc" server and saved as "query.fa".
+Then, "find_hits.sh" script was execuated to obtain all protein hits using "nr" database.
+
+In order to find a threshold to distinguish highly similar receptors to McpB from the others, I calculated %identity of McpB and other three Mcps of B. subtilis 168 using pairwise amino acid sequence alignment (Needle tool):
+
+McpB:McpA
+#=======================================
+#Aligned_sequences: 2
+# 1: BSU31260-MONOMER
+# 2: BSU31240-MONOMER
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 662
+# Identity:     406/662 (61.3%)
+# Similarity:   516/662 (77.9%)
+# Gaps:           1/662 ( 0.2%)
+# Score: 2002.0
+#=======================================
+
+McpB:TlpA
+#=======================================
+# Aligned_sequences: 2
+# 1: BSU31260-MONOMER
+# 2: BSU31250-MONOMER
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 663
+# Identity:     373/663 (56.3%)
+# Similarity:   497/663 (75.0%)
+# Gaps:           2/663 ( 0.3%)
+# Score: 1853.0
+#=======================================
+
+McpB:TlpB
+#=======================================
+# Aligned_sequences: 2
+# 1: BSU31260-MONOMER
+# 2: BSU31230-MONOMER
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 663
+# Identity:     404/663 (60.9%)
+# Similarity:   520/663 (78.4%)
+# Gaps:           2/663 ( 0.3%)
+# Score: 2033.0
+#=======================================
+
+McpB:McpC
+#=======================================
+# Aligned_sequences: 2
+# 1: BSU31260-MONOMER
+# 2: BSU13950-MONOMER
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 692
+# Identity:     213/692 (30.8%)
+# Similarity:   365/692 (52.7%)
+# Gaps:          67/692 ( 9.7%)
+# Score: 796.0
+#=======================================
+
+McpB:TlpC
+#=======================================
+# Aligned_sequences: 2
+# 1: BSU31260-MONOMER
+# 2: BSU03440-MONOMER
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 752
+# Identity:     181/752 (24.1%)
+# Similarity:   298/752 (39.6%)
+# Gaps:         269/752 (35.8%)
+# Score: 678.5
+#=======================================
+
+Blast hits with high coverage of McpB amino acid sequience (at least 650 aa out of 662 aa) were selected.
+When pident distribution of the remaining hits were plotted, three distinct clusters appeared with centers around 30%, 55%, and 95% (see <results/pident.eps>).
+Hits with pident~30% are likely distinct from McpB (take TlpC as an example). Hits with pident ~ 55% are likley paralogs of McpB in each strain (such as McpA, TlpA, and TlpB). Hits with pident ~95% are likely McpB-like receptors with small number of mutations in different B. subtilis strains.
+
+Therefore, I collected two datasets: one contaning all McpB-like recepotors (pident>90%) and second containing all McpB homologs/paralogs (pident>50%).
+
+Next, I used hmmscan and Pfam-A.hmm HMM profile database to identify the regions corresponding to the signaling domain of the chemoreceptors. Because hmmscan does not identify the signaling domian accurately, HAMP domain was identified first and then the region immediately after the HAMP domain was selected for MSA analysis.
+
+Then, sequences of the signaling domain were aligned using MUSCLE aligner and amino acid sequences of the loci correspoding to ethanol sensing regions on both N- and C-helixes were generated. Weblogo 3 online tool was then used to generate the amino acid logos.
+
+All steps described above were automated using a Python script (see <scripts/conservation.py>).
+
+END.

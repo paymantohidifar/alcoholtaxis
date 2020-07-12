@@ -1,0 +1,3 @@
+Started Sat Jul 11 20:37:56 2020
+muscle3.8.31_i86linux64 -in ../results/domain_seqs_50.fa -out ../results/domain_seqs_50.afa -log ../logs/muscle_50.logs 
+Finished Sat Jul 11 20:38:01 2020
